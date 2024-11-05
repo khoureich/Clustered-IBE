@@ -1,5 +1,5 @@
 # Clustered IBE
-This is the implementation of the scheme named Clustered Identity-Based Encryption (CIBE) by Ahmad Khoureich Ka [1]. Our CIBE uses the DDH based IPFE scheme of Agrawal et al. [2] as building block.
+This is the implementation of the scheme named Clustered Identity-Based Encryption (CIBE) by Ahmad Khoureich Ka [1]. CIBE uses the DDH based IPFE scheme of Agrawal et al. [2] as building block.
 
 ## Prerequisites
 The scheme is implemented in Python 3.7.17 using the Charm framework [6] version 0.50.
