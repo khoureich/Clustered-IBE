@@ -94,6 +94,15 @@ class CIBE():
         return v
     
     # get a valid Vandermonde vector x_beta such that the set of vectors in L_alpha U x_beta is linearly independent
+    # L_alpha contains Vandermonde vectors (n < l):
+    # [ 1,	a_1,	(a_1)^2,     (a_1)^3, ...     (a_1)^(l-1) ] 
+    # [ 1,	a_2,	(a_2)^2,     (a_2)^3, ...     (a_2)^(l-1) ]
+    # [ 1,	a_3,	(a_3)^2,     (a_3)^3, ...     (a_3)^(l-1) ]
+    # [ .	.                                                 ]
+    # [ .	.                                                 ]
+    # [ .	.                                                 ]
+    # [ 1,	a_n,	(a_n)^2,     (a_n)^3, ...     (a_n)^(l-1) ]
+    # Vectors in L_alpha are linearly independent if and only if all a_i are distinct.
     def get_valid_vandermonde_vector(self, L_alpha, l):
         while True:
             a = self.ipfe.group.random(ZR) 
