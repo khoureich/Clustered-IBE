@@ -102,7 +102,7 @@ class CIBE():
     # [ .	.                                                 ]
     # [ .	.                                                 ]
     # [ 1,	a_n,	(a_n)^2,     (a_n)^3, ...     (a_n)^(l-1) ]
-    # Vectors in L_alpha are linearly independent if and only if all a_i are distinct.
+    # L_alpha is a set of linearly independent vectors if and only if all a_i are distinct.
     def get_valid_vandermonde_vector(self, L_alpha, l):
         while True:
             a = self.ipfe.group.random(ZR) 
