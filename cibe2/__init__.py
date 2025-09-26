@@ -14,15 +14,31 @@ from charm.toolbox.pairinggroup import ZR
 from ipfe_ddh import IPFEDDH
 
 class CIBE2():
-    def __init__(self, group_obj, l):
+    # In this implementation, the ID is a string, it can be an email, a name, etc.
+    # We hash the ID to an element in ZR.
+
+    # If we calculate the cluster number associated with an ID with the formula
+    # cluster_number = math.floor(ID/(l-1)) we risk having clusters with only one ID
+    # Therefore, for optimization reasons, it is useful to specify the number of IDs (nID)
+    # to manage and the number of clusters (nClusters) we want. 
+    # The preceding formula becomes: cluster_number = math.floor(ID % nClusters)
+    
+    # nId/nClusters indicates the average number of IDs per cluster. For security reasons,
+    # the number of IDs per cluster should not exceed l-1.
+
+    # l: the functionality parameter of the IPFE
+    # nID: the number of IDs
+    # nClusters: the number of clusters
+    def __init__(self, group_obj, l, nID, nClusters):
         self.name = 'CIBE'
         self.ipfe = IPFEDDH(group_obj, l)
         self.l = l
+        self.nID = nID
+        self.nClusters = nClusters
         
     def setup(self):
         MSK = {}
-        params = {'MPK':{}}
-        
+        params = {'MPK':{}}        
         return MSK, params
     
     
@@ -30,12 +46,9 @@ class CIBE2():
         # ID is a string, it can be an email, a name, etc.
         # We hash the ID to an element in ZR
         ID_ZR = self.ipfe.group.hash(ID, ZR)
-        ID_int = int(ID_ZR)
-        # We map the ID to a cluster alpha and a vector number beta in that cluster
-        alpha = int(math.floor(ID_int/(self.l-1)))
-        beta = ID_int % (self.l-1)
+        alpha = int(math.floor(int(ID_ZR) % self.nClusters))
         
-        print(f'Active cluster: {alpha}, vector number: {beta}')  
+        print(f'Active cluster: {alpha} for ID: {ID}.')  
         
         if alpha not in MSK:
             (msk_alpha, mpk_alpha) = self.ipfe.setup()
@@ -43,12 +56,11 @@ class CIBE2():
             params['MPK'][alpha] = mpk_alpha
         
         # We use Vandermonde vectors e.g. x_beta = [1, a, a^2, a^3, ... a^(l-1)] where a = hash_to_ZR(ID).
-        # It is no longer necessary to store these vectors in L_alpha.
+        # It is no longer necessary to store these vectors in L[alpha].
         # Each cluster contains at most l-1 Vandermonde vectors in (ZR*)^l created from different Ids,
         # therefore, these vectors are linearly independent.
 
-        x_beta = self.vandermonde_vector(ID_ZR, self.l)
-            
+        x_beta = self.vandermonde_vector(ID_ZR, self.l)            
         SKx_beta = self.ipfe.keygen(MSK[alpha], x_beta)
         SKx_beta['x'] = x_beta[1]
                     
@@ -57,7 +69,7 @@ class CIBE2():
     
     def encrypt(self, params, ID, m):
         ID_ZR = self.ipfe.group.hash(ID, ZR)
-        alpha = int(math.floor(int(ID_ZR)/(self.l-1)))
+        alpha = int(math.floor(int(ID_ZR) % self.nClusters))
 
         if alpha not in params['MPK']:
             print (f'Encryption error. First generate a secret key for identity {ID}. Encryption is aborted!')
@@ -95,4 +107,3 @@ class CIBE2():
             v.append(a**i)
             
         return v
-    
