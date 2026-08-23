@@ -14,7 +14,7 @@
 | This version 3 eliminates the shortcomings of version 1 and 2 at the cost of a counter
 | that is incremented each time a new secret key is generated and the use of ID aliases for encryption.
 | A new cluster is created only when the current cluster is full (i.e. contains l-1 IDs).
-| The ID alias is the original ID concatenated with a cluster number.
+| An ID alias is the original ID concatenated with the corresponding secretkey number.
 | The main objective is to obtain the maximum compression of many public-keys into a public parameter.
 |
 '''
