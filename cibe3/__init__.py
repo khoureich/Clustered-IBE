@@ -26,7 +26,7 @@ from ipfe_ddh import IPFEDDH
 
 class CIBE3():
     # In this implementation, the ID is a string, it can be an email, a name, etc.
-    # An ID alias is the original ID concatenated with a cluster number.
+    # An ID alias is the original ID concatenated with the corresponding secretkey number.
     # The original ID is used to generate the secret key, while the ID alias (returned by keygen) is used for encryption.
     # We hash the ID to an element in ZR.
 
