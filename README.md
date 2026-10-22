@@ -1,3 +1,8 @@
+<p align="center">
+    <img alt="ViewCount" src="https://views.whatilearened.today/views/github/khoureich/ClusteredIBE.svg">
+    <a href='https://github.com/MShawon/github-clone-count-badge'><img alt='GitHub Clones' src='https://img.shields.io/badge/dynamic/json?color=success&label=Clone&query=count&url=https://gist.githubusercontent.com/khoureich/abf0a068d555707d32a4b578a3487f55/raw/clone.json&logo=github'></a>
+</p>
+
 # Clustered IBE
 This is the implementation of the scheme named Clustered Identity-Based Encryption (CIBE) by Ahmad Khoureich Ka [1]. The CIBE scheme uses Inner-Product Functional Encryption (IPFE) [2] as a building block.
 
